@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+<!-- Target class configuration -->
+<bean id="tar" class="com.nt.service.IntAmtCalculator"/>
+<!-- around advice configuration -->
+<bean id="cache" class="com.nt.aspect.CacheAdvice"></bean>
+<bean id="log" class="com.nt.aspect.LogAroundAdvice"/>
+<bean id="per" class="com.nt.aspect.PerformanceMonitoringAdvice"/>
+
+<!-- cfg ProxyFactory classes -->
+<bean id="pfb" class="org.springframework.aop.framework.ProxyFactoryBean">
+<property name="target" ref="tar"/>
+<property name="proxyInterfaces">
+<list>
+<value>com.nt.service.IntAmtCalculatorInterface</value>
+</list>
+</property>
+<property name="interceptorNames">
+<list>
+<value>log</value>
+<value>per</value>
+<value>cache</value>
+</list>
+</property>
+</bean>
+</beans>
